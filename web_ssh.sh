@@ -51,9 +51,10 @@ else
     print_success "webssh 安装成功。"
 fi
 
+
 # 提示用户输入端口号
 echo -n "请输入要使用的端口号（默认为 21908）："
-read PORT
+read -r PORT
 
 # 如果用户没有输入则使用默认端口 21908
 if [ -z "$PORT" ]; then
