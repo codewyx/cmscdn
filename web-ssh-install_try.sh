@@ -51,35 +51,6 @@ else
     print_success "webssh 安装成功。"
 fi
 
-
-
-# 提示用户输入端口号
-echo -n "请输入要使用的端口号："
-
-# 等待用户按下回车
-flush_output
-
-# 读取用户输入的端口号
-read -r PORT
-
-# 检查输入是否为数字，并且在有效的端口范围内
-if ! [[ "$PORT" =~ ^[0-9]+$ ]]; then
-    print_error "端口号必须为数字。退出脚本。"
-    exit 1
-fi
-if [ "$PORT" -le 0 ] || [ "$PORT" -gt 65535 ]; then
-    print_error "端口号必须在 1 到 65535 之间。退出脚本。"
-    exit 1
-fi
-
-# 如果用户没有输入则使用默认端口 21908
-if [ -z "$PORT" ]; then
-    PORT=21908
-fi
-
-# 打印选择的端口号
-echo "您选择的端口号是：$PORT"
-
 # 启动 webssh，指定端口
-print_success "正在启动 webssh..."
-wssh --port="$PORT"
+print_success "正在启动 webssh 在端口 21908..."
+wssh --port=21908
