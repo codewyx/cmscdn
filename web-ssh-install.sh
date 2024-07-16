@@ -71,6 +71,9 @@ if [ "$PORT" -le 0 ] || [ "$PORT" -gt 65535 ]; then
     exit 1
 fi
 
+# 打印选择的端口号
+echo "您选择的端口号是：$PORT"
+
 # 启动 webssh，指定端口
 print_success "正在启动 webssh，端口号为 $PORT..."
 wssh --port="$PORT"
