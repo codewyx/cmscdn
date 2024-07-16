@@ -10,12 +10,17 @@ print_error() {
     echo -e "\e[31m错误：$1\e[0m"
 }
 
+print_success "尝试更新apt……"
+sudo apt update
+
 # 检查是否已安装 Python 3
 if command -v python3 &>/dev/null; then
     print_success "Python 3 已经安装。"
+    print_success "尝试更新Python3……"
+    sudo apt install -y python3
 else
     print_error "未安装 Python 3，正在安装 Python 3..."
-    sudo apt update
+    
     sudo apt install -y python3
     if [ $? -ne 0 ]; then
         print_error "安装 Python 3 失败。退出脚本。"
@@ -27,6 +32,9 @@ fi
 # 检查是否已安装 pip
 if command -v pip &>/dev/null; then
     print_success "pip 已经安装。"
+    print_success "尝试更新pip……"
+    curl 'http://mirrors.aliyun.com/pypi/get-pip.py' > get-pip.py
+    sudo python3 get-pip.py
 else
     print_error "未安装 pip，正在安装 pip..."
     curl 'http://mirrors.aliyun.com/pypi/get-pip.py' > get-pip.py
