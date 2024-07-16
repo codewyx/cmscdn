@@ -53,8 +53,7 @@ fi
 
 
 # 提示用户输入端口号
-echo -n "请输入要使用的端口号："
-read -r PORT
+read -rp "请输入要使用的端口号：" PORT
 
 # 检查输入是否为数字，并且在有效的端口范围内
 if ! [[ "$PORT" =~ ^[0-9]+$ ]]; then
@@ -70,5 +69,5 @@ fi
 echo "您选择的端口号是：$PORT"
 
 # 启动 webssh，指定端口
-print_success "正在启动 webssh，端口号为 $PORT..."
+print_success "正在启动 webssh..."
 wssh --port="$PORT"
