@@ -29,7 +29,7 @@ if command -v pip &>/dev/null; then
     print_success "pip 已经安装。"
 else
     print_error "未安装 pip，正在安装 pip..."
-    curl -sS https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+    curl -sS http://mirrors.aliyun.com/pypi/get-pip.py -o get-pip.py
     sudo python3 get-pip.py
     if [ $? -ne 0 ]; then
         print_error "安装 pip 失败。退出脚本。"
