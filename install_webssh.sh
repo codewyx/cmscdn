@@ -38,18 +38,22 @@ else
     print_success "pip 安装成功。"
 fi
 
+# 检查是否已安装 webssh
+if command -v wssh &>/dev/null; then
+    print_success "webssh 已经安装。"
+else
+    print_error "未安装 webssh，正在安装 webssh..."
+    sudo pip install webssh -i https://pypi.tuna.tsinghua.edu.cn/simple/
+    if [ $? -ne 0 ]; then
+        print_error "安装 webssh 失败。退出脚本。"
+        exit 1
+    fi
+    print_success "webssh 安装成功。"
+fi
+
 # 提示用户输入端口号
 read -p "请输入要使用的端口号（默认为 21908）：" PORT
 PORT=${PORT:-21908}  # 如果用户没有输入则使用默认端口 21908
-
-# 使用 pip 安装 webssh
-print_success "正在安装 webssh..."
-sudo pip install webssh -i https://pypi.tuna.tsinghua.edu.cn/simple/
-if [ $? -ne 0 ]; then
-    print_error "安装 webssh 失败。退出脚本。"
-    exit 1
-fi
-print_success "webssh 安装成功。"
 
 # 启动 webssh，指定端口
 print_success "正在启动 webssh，端口号为 $PORT..."
