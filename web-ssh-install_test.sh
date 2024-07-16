@@ -56,13 +56,6 @@ fi
 # 提示用户输入端口号
 echo -n "请输入要使用的端口号："
 
-# 刷新输出，确保用户看到提示
-flush_output() {
-    while read -r -t 0; do
-        read -r
-    done
-}
-
 # 等待用户按下回车
 flush_output
 
