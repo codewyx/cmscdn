@@ -53,8 +53,21 @@ fi
 
 # 提示用户输入端口号
 read -p "请输入要使用的端口号（默认为 21908）：" PORT
-PORT=${PORT:21908}  # 如果用户没有输入则使用默认端口 21908
+
+# 如果用户没有输入则使用默认端口 21908
+PORT=${PORT:-21908}
+
+# 检查输入是否为数字，并且在有效的端口范围内
+if ! [[ "$PORT" =~ ^[0-9]+$ ]]; then
+    print_error "端口号必须为数字。退出脚本。"
+    exit 1
+fi
+if [ "$PORT" -le 0 ] || [ "$PORT" -gt 65535 ]; then
+    print_error "端口号必须在 1 到 65535 之间。退出脚本。"
+    exit 1
+fi
 
 # 启动 webssh，指定端口
 print_success "正在启动 webssh，端口号为 $PORT..."
 wssh --port=$PORT
+
