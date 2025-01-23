@@ -75,7 +75,7 @@ fi
 print_success "web_system_apt.py 下载成功。"
 
 # 赋予 web_system_apt.py 执行权限
-cd root
+
 chmod +x web_system_apt.py
 if [ $? -ne 0 ]; then
     print_error "赋予 web_system_apt.py 执行权限失败。退出脚本。"
