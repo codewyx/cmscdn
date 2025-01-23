@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import psutil
 from datetime import datetime
+import requests
 
 app = Flask(__name__)
 
@@ -31,11 +32,23 @@ def get_processes_info():
 @app.route('/process', methods=['GET'])
 def process():
     data = request.args
-    if data.get('type') == 'process':
+    if data.get('type') == 'detail':
+        token = data.get('token')
         processes_info = get_processes_info()
-        return jsonify(processes_info)
+        
+        # 发送 GET 请求到指定 URL，并携带 token
+        response = requests.get('http://localhost:8090/module/base/identify.php', params={'token': token})
+        
+        response_data = response.json()
+        print(response_data.get('status'))
+        if response_data.get('status') == '200':
+            return jsonify(processes_info)  # 输出响应内容
+        elif response_data.get('status') == '700':
+            return jsonify(message='Unauthorized'), 403  # 提醒未授权
+        else:
+            return jsonify(message='Request failed', status=response_data.get('status')), response.status_code
     else:
-        return jsonify(message='invalid type'), 400
+        return jsonify(message='Invalid type'), 400
 
 if __name__ == '__main__':
     app.run(debug=True, port=21909)
