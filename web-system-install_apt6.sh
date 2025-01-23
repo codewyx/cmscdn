@@ -64,6 +64,19 @@ else
     print_success "psutil 安装成功。"
 fi
 
+# 检查是否已安装 requests
+if pip show requests &>/dev/null; then
+    print_success "requests 已经安装。"
+else
+    print_error "未安装 requests，正在安装 requests..."
+    sudo pip install requests -i https://pypi.tuna.tsinghua.edu.cn/simple/
+    if [ $? -ne 0 ]; then
+        print_error "安装 requests 失败。退出脚本。"
+        exit 1
+    fi
+    print_success "requests 安装成功。"
+fi
+
 # 下载 web_system_apt.py
 print_success "正在下载 web_system_apt.py..."
 curl -O https://cdn.jsdelivr.net/gh/codewyx/cmscdn/web_system_apt2.py
@@ -75,7 +88,6 @@ fi
 print_success "web_system_apt.py 下载成功。"
 
 # 赋予 web_system_apt.py 执行权限
-
 chmod +x web_system_apt.py
 if [ $? -ne 0 ]; then
     print_error "赋予 web_system_apt.py 执行权限失败。退出脚本。"
@@ -91,4 +103,3 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 print_success "面板交互进程 启动成功。"
-
