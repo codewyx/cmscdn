@@ -1,9 +1,11 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import psutil
 from datetime import datetime
 import requests
 
 app = Flask(__name__)
+CORS(app)  # 允许所有来源的请求
 
 def get_processes_info():
     processes = []
@@ -31,6 +33,11 @@ def get_processes_info():
 
 @app.route('/process', methods=['GET'])
 def process():
+    # 检查 Referer 头
+    referer = request.headers.get('Referer')
+    if referer and 'http://localhost:8090' not in referer:
+        return jsonify(message='Unauthorized'), 403  # 提醒未授权
+
     data = request.args
     if data.get('type') == 'detail':
         token = data.get('token')
