@@ -64,31 +64,32 @@ else
     print_success "psutil 安装成功。"
 fi
 
-# 下载 system_apt.py
-print_success "正在下载 system_apt.py..."
+# 下载 web_system_apt.py
+print_success "正在下载 web_system_apt.py..."
 curl -O https://cdn.jsdelivr.net/gh/codewyx/cmscdn/web_system_apt.py
 if [ $? -ne 0 ]; then
-    print_error "下载 system_apt.py 失败。退出脚本。"
+    print_error "下载 web_system_apt.py 失败。退出脚本。"
     exit 1
 fi
-print_success "system_apt.py 下载成功。"
+print_success "web_system_apt.py 下载成功。"
 
-# 赋予 system_apt.py 执行权限
-chmod +x system_apt.py
+# 赋予 web_system_apt.py 执行权限
+cd root
+chmod +x web_system_apt.py
 if [ $? -ne 0 ]; then
-    print_error "赋予 system_apt.py 执行权限失败。退出脚本。"
+    print_error "赋予 web_system_apt.py 执行权限失败。退出脚本。"
     exit 1
 fi
-print_success "system_apt.py 执行权限赋予成功。"
+print_success "web_system_apt.py 执行权限赋予成功。"
 
-# 使用 nohup 守护运行 system_apt.py
-print_success "正在启动 system_apt.py 并保持守护运行..."
-nohup python3 system_apt.py &
+# 使用 nohup 守护运行 web_system_apt.py
+print_success "正在启动 web_system_apt.py 并保持守护运行..."
+nohup python3 web_system_apt.py &
 if [ $? -ne 0 ]; then
-    print_error "启动 system_apt.py 失败。退出脚本。"
+    print_error "启动 web_system_apt.py 失败。退出脚本。"
     exit 1
 fi
-print_success "system_apt.py 启动成功并保持守护运行。"
+print_success "web_system_apt.py 启动成功并保持守护运行。"
 
 print_success "正在启动 面板交互进程 在端口 21909..."
 python3 setup.py &
