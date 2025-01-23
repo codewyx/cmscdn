@@ -83,18 +83,11 @@ fi
 print_success "web_system_apt.py 执行权限赋予成功。"
 
 # 使用 nohup 守护运行 web_system_apt.py
-print_success "正在启动 web_system_apt.py 并保持守护运行..."
+print_success "正在启动 面板交互进程 在端口 21909..."
 nohup python3 web_system_apt.py &
 if [ $? -ne 0 ]; then
-    print_error "启动 web_system_apt.py 失败。退出脚本。"
+    print_error "启动 面板交互进程 失败。退出脚本。"
     exit 1
 fi
-print_success "web_system_apt.py 启动成功并保持守护运行。"
+print_success "面板交互进程 启动成功。"
 
-print_success "正在启动 面板交互进程 在端口 21909..."
-python3 setup.py &
-if [ $? -ne 0 ]; then
-    print_error "启动面板交互进程失败。退出脚本。"
-    exit 1
-fi
-print_success "面板交互进程启动成功。"
