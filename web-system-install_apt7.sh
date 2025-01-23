@@ -51,6 +51,19 @@ else
     print_success "flask 安装成功。"
 fi
 
+# 检查是否已安装 flask_cors
+if pip show flask_cors &>/dev/null; then
+    print_success "flask_cors 已经安装。"
+else
+    print_error "未安装 flask_cors，正在安装 flask_cors..."
+    sudo pip install flask_cors -i https://pypi.tuna.tsinghua.edu.cn/simple/
+    if [ $? -ne 0 ]; then
+        print_error"安装 flask_cors 失败。退出脚本。"
+        exit 1
+    fi
+    print_success "flask_cors 安装成功。"
+fi
+
 # 检查是否已安装 psutil
 if pip show psutil &>/dev/null; then
     print_success "psutil 已经安装。"
@@ -79,8 +92,8 @@ fi
 
 # 下载 web_system_apt.py
 print_success "正在下载 web_system_apt.py..."
-curl -O https://cdn.jsdelivr.net/gh/codewyx/cmscdn/web_system_apt2.py
-mv web_system_apt2.py web_system_apt.py
+curl -O https://cdn.jsdelivr.net/gh/codewyx/cmscdn/web_system_apt3.py
+mv web_system_apt3.py web_system_apt.py
 if [ $? -ne 0 ]; then
     print_error "下载 web_system_apt.py 失败。退出脚本。"
     exit 1
