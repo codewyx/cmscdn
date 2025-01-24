@@ -5,7 +5,7 @@ from datetime import datetime
 import requests
 
 app = Flask(__name__)
-CORS(app)  # 允许所有来源的请求
+CORS(app,origins='http://localhost:8090/')  
 
 def get_processes_info():
     processes = []
@@ -33,29 +33,40 @@ def get_processes_info():
 
 @app.route('/process', methods=['GET'])
 def process():
-    # 检查 Referer 头
-    referer = request.headers.get('Referer')
-    if referer and 'http://localhost:8090' not in referer:
-        return jsonify(message='Unauthorized'), 403  # 提醒未授权
+   
 
     data = request.args
     if data.get('type') == 'detail':
-        token = data.get('token')
-        processes_info = get_processes_info()
-        
-        # 发送 GET 请求到指定 URL，并携带 token
+        token = request.headers.get('token')
         response = requests.get('http://localhost:8090/module/base/identify.php', params={'token': token})
         
         response_data = response.json()
         print(response_data.get('status'))
         if response_data.get('status') == '200':
-            return jsonify(processes_info)  # 输出响应内容
+            processes_info = get_processes_info()
+            return jsonify(processes_info)  
         elif response_data.get('status') == '700':
-            return jsonify(message='Unauthorized'), 403  # 提醒未授权
+            return jsonify(message='Unauthorized')
+        else:
+            return jsonify(message='Request failed', status=response_data.get('status')), response.status_code
+    elif data.get('type') == 'kill':
+        token = request.headers.get('token')
+        response = requests.get('http://localhost:8090/module/base/identify.php', params={'token': token})
+        response_data = response.json()
+        if response_data.get('status') == '200':
+            pid = data.get('pid')
+            try:
+                process = psutil.Process(pid)
+                process.kill()
+                return jsonify(message='Process killed successfully')
+            except psutil.NoSuchProcess:
+                return jsonify(message='Process not found'), 404
+        elif response_data.get('status') == '700':
+            return jsonify(message='Unauthorized')
         else:
             return jsonify(message='Request failed', status=response_data.get('status')), response.status_code
     else:
-        return jsonify(message='Invalid type'), 400
+        return jsonify(message='Invalid type')
 
 if __name__ == '__main__':
     app.run(debug=True, port=21909)
