@@ -56,7 +56,7 @@ def process():
         response = requests.get('http://localhost:8090/module/base/identify.php', params={'token': token})
         response_data = response.json()
         if response_data.get('status') == '200':
-            pid = data.get('pid')
+            pid = int(data.get('pid'))
             try:
                 process = psutil.Process(pid)
                 process.kill()
