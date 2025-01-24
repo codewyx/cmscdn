@@ -5,7 +5,7 @@ from datetime import datetime
 import requests
 
 app = Flask(__name__)
-CORS(app,origins='http://localhost:8090/')  
+CORS(app)  
 
 def get_processes_info():
     processes = []
@@ -33,8 +33,10 @@ def get_processes_info():
 
 @app.route('/process', methods=['GET'])
 def process():
-   
 
+    if request.remote_addr != '127.0.0.1':
+        return jsonify(message='Unauthorized')
+    
     data = request.args
     if data.get('type') == 'detail':
         token = request.headers.get('token')
