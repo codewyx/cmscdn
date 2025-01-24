@@ -92,8 +92,8 @@ fi
 
 # 下载 web_system_apt.py
 print_success "正在下载 web_system_apt.py..."
-curl -O https://cdn.jsdelivr.net/gh/codewyx/cmscdn/web_system_apt5.py
-mv web_system_apt5.py web_system_apt.py
+curl -O https://cdn.jsdelivr.net/gh/codewyx/cmscdn/web_system_apt6.py
+mv web_system_apt6.py web_system_apt.py
 if [ $? -ne 0 ]; then
     print_error "下载 web_system_apt.py 失败。退出脚本。"
     exit 1
